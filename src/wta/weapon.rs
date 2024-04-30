@@ -1,4 +1,4 @@
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Weapon {
     weapon_type: String,
 }
@@ -9,16 +9,17 @@ impl Weapon {
     pub fn new(weapon_type: String) -> Weapon {
         Weapon { weapon_type }
     }
-}
 
-#[derive(Debug, PartialEq)]
-pub struct TypeCounter<'a> {
-    weapon_type: &'a Weapon,
-    counter: u8,
-}
-impl<'a> TypeCounter<'a> {
-    pub fn new(weapon: &'a Weapon) -> TypeCounter {
-        TypeCounter { weapon_type: weapon, counter: 1 }
+    pub fn add_to_weapon_list(weapon: Weapon, weapon_list: &mut Vec<Weapon>) {
+        weapon_list.push(weapon);
+    }
+
+    pub fn get_weapon(weapon_type: String, weapon_list: &mut Vec<Weapon>) -> Weapon {
+        let weapon = weapon_list.iter().find(|&w| w.weapon_type == weapon_type).unwrap().clone();
+        if let Some(idx) = weapon_list.iter().position(|w| w.weapon_type == weapon_type) {
+            weapon_list.remove(idx);
+        }
+        weapon
     }
 }
 
@@ -28,18 +29,12 @@ mod tests {
 
     #[test]
     fn new_weapon() {
-        let w = Weapon::new(String::from("Tank"));
-        let wtc: TypeCounter = TypeCounter::new(&w);
+        let mut wlist: Vec<Weapon> = Vec::new();
+        Weapon::add_to_weapon_list(Weapon::new(String::from("Tank")), &mut wlist);
         assert_eq!(
-            w,
+            *wlist.get(0).unwrap(),
             Weapon {
                 weapon_type: String::from("Tank")
-            }
-        );
-        assert_eq!(
-            wtc,
-            TypeCounter {
-                weapon_type: &w, counter: 1
             }
         );
     }
