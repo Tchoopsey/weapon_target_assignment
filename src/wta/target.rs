@@ -17,13 +17,16 @@ impl Target {
         target_list.push(target);
     }
 
-    pub fn get_target(target_name: String, target_list: &mut Vec<Target>) -> Target {
-        let target = target_list.iter().find(|&t| t.name == target_name).unwrap().clone();
-        if let Some(idx) = target_list.iter().position(|t| t.name == target_name) {
-            target_list.remove(idx);
-        }
-        
-        target
+    pub fn get_target(target_name: String, target_list: &mut Vec<Target>) -> Option<Target> {
+        let target = target_list
+            .iter()
+            .find(|&t| t.name == target_name)?
+            .clone();
+        // if let Some(idx) = target_list.iter().position(|t| t.name == target_name) {
+        //     target_list.remove(idx);
+        // }
+
+        Some(target)
     }
 }
 

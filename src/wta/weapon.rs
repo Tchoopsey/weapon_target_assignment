@@ -14,12 +14,15 @@ impl Weapon {
         weapon_list.push(weapon);
     }
 
-    pub fn get_weapon(weapon_type: String, weapon_list: &mut Vec<Weapon>) -> Weapon {
-        let weapon = weapon_list.iter().find(|&w| w.weapon_type == weapon_type).unwrap().clone();
-        if let Some(idx) = weapon_list.iter().position(|w| w.weapon_type == weapon_type) {
-            weapon_list.remove(idx);
-        }
-        weapon
+    pub fn get_weapon(weapon_type: String, weapon_list: &mut Vec<Weapon>) -> Option<Weapon> {
+        let weapon = weapon_list
+            .iter()
+            .find(|&w| w.weapon_type == weapon_type)?
+            .clone();
+        // if let Some(idx) = weapon_list.iter().position(|w| w.weapon_type == weapon_type) {
+        //     weapon_list.remove(idx);
+        // }
+        Some(weapon)
     }
 }
 
