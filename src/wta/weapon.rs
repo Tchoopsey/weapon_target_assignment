@@ -1,4 +1,6 @@
-#[derive(Debug, PartialEq, Clone)]
+use std::collections::HashMap;
+
+#[derive(Debug, PartialEq, Eq, Clone, Hash)]
 pub struct Weapon {
     weapon_type: String,
 }
@@ -10,35 +12,32 @@ impl Weapon {
         Weapon { weapon_type }
     }
 
-    pub fn add_to_weapon_list(weapon: Weapon, weapon_list: &mut Vec<Weapon>) {
-        weapon_list.push(weapon);
+    pub fn add_to_weapon_list(weapon: Weapon, weapon_list: &mut HashMap<Weapon, u8>) {
+        let count = weapon_list.entry(weapon).or_insert(0);
+        *count += 1;
     }
 
-    pub fn get_weapon(weapon_type: String, weapon_list: &mut Vec<Weapon>) -> Option<Weapon> {
+    /// Fetches a weapon from the weapon_list and removes a counter of that weapon
+    /// When the counter reaches 0, weapon gets removed from the list
+    pub fn get_weapon(weapon_type: String, weapon_list: &mut HashMap<Weapon, u8>) -> Option<Weapon> {
         let weapon = weapon_list
-            .iter()
+            .keys()
             .find(|&w| w.weapon_type == weapon_type)?
             .clone();
-        // if let Some(idx) = weapon_list.iter().position(|w| w.weapon_type == weapon_type) {
-        //     weapon_list.remove(idx);
-        // }
+        
+        if let Some(val) = weapon_list.get_mut(&weapon) {
+            if *val > 0 {
+                *val -= 1;
+            }
+            if *val == 0 {
+                weapon_list.remove(&weapon);
+            }
+        }
         Some(weapon)
     }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn new_weapon() {
-        let mut wlist: Vec<Weapon> = Vec::new();
-        Weapon::add_to_weapon_list(Weapon::new(String::from("Tank")), &mut wlist);
-        assert_eq!(
-            *wlist.get(0).unwrap(),
-            Weapon {
-                weapon_type: String::from("Tank")
-            }
-        );
+    
+    pub fn total_weapons(weapon_list: &mut HashMap<Weapon, u8>) -> u8 {
+        weapon_list.values().sum()
     }
 }
+

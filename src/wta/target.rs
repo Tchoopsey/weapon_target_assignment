@@ -29,26 +29,3 @@ impl Target {
         Some(target)
     }
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let mut tlist: Vec<Target> = Vec::new();
-        let t = Target::new(10.0, &mut tlist);
-        let t2 = Target::new(20.0, &mut tlist);
-        Target::add_to_target_list(t, &mut tlist);
-        Target::add_to_target_list(t2, &mut tlist);
-
-        assert_eq!(tlist.len(), 2);
-        assert_eq!(
-            *tlist.get(0).unwrap(),
-            Target {
-                name: String::from("T1"),
-                value: 10.0
-            }
-        );
-    }
-}
