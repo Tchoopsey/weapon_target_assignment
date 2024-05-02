@@ -1,4 +1,6 @@
-#[derive(Debug, PartialEq, Clone)]
+use std::fmt::Display;
+
+#[derive(Debug, Clone)]
 pub struct Target {
     name: String,
     pub value: f32,
@@ -37,5 +39,17 @@ impl Target {
 
     pub fn get_name(self) -> String {
         self.name
+    }
+}
+
+impl Display for Target {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}: {}", self.name, self.value)
+    }
+}
+
+impl PartialEq for Target {
+    fn eq(&self, other: &Self) -> bool {
+        self.name == other.name
     }
 }
