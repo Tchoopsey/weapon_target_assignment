@@ -1,7 +1,7 @@
 #[derive(Debug, PartialEq, Clone)]
 pub struct Target {
     name: String,
-    value: f32,
+    pub value: f32,
 }
 
 #[allow(dead_code)]
@@ -17,15 +17,25 @@ impl Target {
         target_list.push(target);
     }
 
-    pub fn get_target(target_name: String, target_list: &mut Vec<Target>) -> Option<Target> {
-        let target = target_list
+    pub fn replace_target(target_list: &mut Vec<Target>, target: Target) {
+        let idx = target_list
             .iter()
-            .find(|&t| t.name == target_name)?
-            .clone();
-        // if let Some(idx) = target_list.iter().position(|t| t.name == target_name) {
-        //     target_list.remove(idx);
-        // }
+            .position(|t| t.name == target.name)
+            .unwrap();
+        if let Some(t) = target_list.get_mut(idx) {
+            *t = target;
+        } else {
+            println!("out of bounds");
+        }
+    }
+
+    pub fn get_target(target_name: String, target_list: &mut Vec<Target>) -> Option<Target> {
+        let target = target_list.iter().find(|&t| t.name == target_name)?.clone();
 
         Some(target)
+    }
+
+    pub fn get_name(self) -> String {
+        self.name
     }
 }

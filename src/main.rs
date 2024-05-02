@@ -4,7 +4,6 @@ use weapon_target_assignment::{assignment::Assignment, target::Target, weapon::W
 
 fn main() {
     let mut weapon_list: HashMap<Weapon, u8> = HashMap::new();
-    // let mut weapon_list: Vec<Weapon> = Vec::new();
     Weapon::add_to_weapon_list(Weapon::new(String::from("Tank")), &mut weapon_list);
     Weapon::add_to_weapon_list(Weapon::new(String::from("Tank")), &mut weapon_list);
     Weapon::add_to_weapon_list(Weapon::new(String::from("Plane")), &mut weapon_list);
