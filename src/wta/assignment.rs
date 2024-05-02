@@ -37,9 +37,9 @@ impl Assignment {
         ctd: &Vec<(Weapon, Target, f32)>,
         weapon: &Weapon,
         target: &Target,
-    ) -> f32 {
-        let chance = ctd.iter().find(|(w, t, _c)| w == weapon && t == target);
-        chance.unwrap().2
+    ) -> Option<f32> {
+        ctd.iter().find(|(w, t, _)| w == weapon && t == target)
+            .map(|(_, _, c)| *c)
     }
 
     pub fn wta(
@@ -48,7 +48,7 @@ impl Assignment {
         w: Weapon,
         ctd: &Vec<(Weapon, Target, f32)>,
     ) -> Assignment {
-        let chance = Assignment::get_chance_to_destroy(ctd, &w, &t);
+        let chance = Assignment::get_chance_to_destroy(ctd, &w, &t).unwrap();
         let mut t = t;
         t.value *= chance;
         Target::replace_target(target_list, t.clone());
@@ -85,17 +85,27 @@ impl Assignment {
             io::stdin()
                 .read_line(&mut weapon)
                 .expect("Unable to read line");
-            let w: Weapon =
-                Weapon::get_weapon(weapon.strip_suffix("\n").unwrap().to_string(), weapon_list)
-                    .unwrap();
+            let w: Weapon;
+            if let Some(wp) = Weapon::get_weapon(weapon.strip_suffix("\n").unwrap().to_string(), weapon_list) {
+                w = wp;
+                println!("{w}");
+            } else {
+                println!("{} does not exist in weapon list\n", weapon);
+                continue;
+            }
 
             let mut target = String::new();
             io::stdin()
                 .read_line(&mut target)
                 .expect("Unable to read line");
-            let t: Target =
-                Target::get_target(target.strip_suffix("\n").unwrap().to_string(), target_list)
-                    .unwrap();
+            let t: Target;
+            if let Some(tar) = Target::get_target(target.strip_suffix("\n").unwrap().to_string(), target_list) {
+                t = tar;
+                println!("{t}");
+            } else {
+                println!("{} does not exist in target list\n", target);
+                continue;
+            }
 
             total_weapons -= 1;
 
