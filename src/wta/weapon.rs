@@ -1,6 +1,6 @@
 use std::{collections::HashMap, fmt::Display};
 
-#[derive(Debug, PartialEq, Eq, Clone, Hash)]
+#[derive(Debug, Eq, Clone, Hash)]
 pub struct Weapon {
     weapon_type: String,
 }
@@ -47,5 +47,11 @@ impl Weapon {
 impl Display for Weapon {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(f, "Weapon: {}", self.weapon_type)
+    }
+}
+
+impl PartialEq for Weapon {
+    fn eq(&self, other: &Self) -> bool {
+        self.weapon_type == other.weapon_type
     }
 }
