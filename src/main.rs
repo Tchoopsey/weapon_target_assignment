@@ -13,5 +13,6 @@ fn main() {
     Target::add_to_target_list(Target::new(30.0, &mut target_list), &mut target_list);
     Target::add_to_target_list(Target::new(40.0, &mut target_list), &mut target_list);
 
-    Assignment::manual_assign(&mut weapon_list, &mut target_list);
+    // Assignment::manual_assign(&mut weapon_list, &mut target_list);
+    Assignment::random_assign(&mut weapon_list, &mut target_list);
 }

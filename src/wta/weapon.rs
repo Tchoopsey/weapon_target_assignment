@@ -1,4 +1,5 @@
 use std::{collections::HashMap, fmt::Display};
+use rand::seq::IteratorRandom;
 
 #[derive(Debug, Eq, Clone, Hash)]
 pub struct Weapon {
@@ -27,6 +28,20 @@ impl Weapon {
             .keys()
             .find(|&w| w.weapon_type == weapon_type)?
             .clone();
+
+        if let Some(val) = weapon_list.get_mut(&weapon) {
+            if *val > 0 {
+                *val -= 1;
+            }
+            if *val == 0 {
+                weapon_list.remove(&weapon);
+            }
+        }
+        Some(weapon)
+    }
+
+    pub fn get_random_weapon(weapon_list: &mut HashMap<Weapon, u8>) -> Option<Weapon> {
+        let weapon = weapon_list.keys().choose(&mut rand::thread_rng()).unwrap().clone();
 
         if let Some(val) = weapon_list.get_mut(&weapon) {
             if *val > 0 {

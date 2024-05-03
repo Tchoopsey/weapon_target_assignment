@@ -1,5 +1,7 @@
 use std::fmt::Display;
 
+use rand::Rng;
+
 #[derive(Debug, Clone)]
 pub struct Target {
     name: String,
@@ -39,6 +41,11 @@ impl Target {
 
     pub fn get_name(self) -> String {
         self.name
+    }
+
+    pub fn get_random_target(target_list: &mut Vec<Target>) -> Target {
+        let idx = rand::thread_rng().gen_range(0..target_list.len());
+        target_list[idx].clone()
     }
 }
 

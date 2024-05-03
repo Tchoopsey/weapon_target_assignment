@@ -115,4 +115,35 @@ impl Assignment {
         println!("Remaining sum of targets values:");
         println!("{}", Assignment::calculate_remains(target_list));
     }
+
+    pub fn random_assign(weapon_list: &mut HashMap<Weapon, u8>, target_list: &mut Vec<Target>) {
+        let mut total_weapons = Weapon::total_weapons(weapon_list);
+        let chance_to_destroy = Assignment::generate_chance_to_destroy(weapon_list, target_list);
+        println!(
+            "\n\nChance each weapon has to destroy each target:\n{:#?}",
+            chance_to_destroy
+        );
+
+        let mut assignment_list: Vec<Assignment> = Vec::new();
+
+        while total_weapons != 0 {
+            println!(
+                "\n\nChance each weapon has to destroy each target:\n{:#?}",
+                chance_to_destroy
+            );
+            println!("\nList of available weapons:\n{:?}", weapon_list);
+            println!("\nList of available targets:\n{:?}", target_list);
+
+            let weapon = Weapon::get_random_weapon(weapon_list).unwrap();
+
+            let target = Target::get_random_target(target_list);
+
+            total_weapons -= 1;
+
+            assignment_list.push(Assignment::wta(target, target_list, weapon, &chance_to_destroy));
+        }
+        println!("{:#?}", assignment_list);
+        println!("Remaining sum of targets values:");
+        println!("{}", Assignment::calculate_remains(target_list));
+    }
 }
