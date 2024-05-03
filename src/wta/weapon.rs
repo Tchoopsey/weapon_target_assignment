@@ -40,7 +40,7 @@ impl Weapon {
         Some(weapon)
     }
 
-    pub fn get_random_weapon(weapon_list: &mut HashMap<Weapon, u8>) -> Option<Weapon> {
+    pub fn get_random_weapon(weapon_list: &mut HashMap<Weapon, u8>) -> Weapon {
         let weapon = weapon_list.keys().choose(&mut rand::thread_rng()).unwrap().clone();
 
         if let Some(val) = weapon_list.get_mut(&weapon) {
@@ -51,7 +51,7 @@ impl Weapon {
                 weapon_list.remove(&weapon);
             }
         }
-        Some(weapon)
+        weapon
     }
 
     pub fn total_weapons(weapon_list: &mut HashMap<Weapon, u8>) -> u8 {
